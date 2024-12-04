@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { removeItem, updateQuantity, updateTotalItems } from './CartSlice';
 import './CartItem.css';
 
-const CartItem = ({ onContinueShopping }) => {
+const CartItem = ({ onContinueShopping, onRemoveFromCart }) => {
     const cart = useSelector(state => state.cart.items);
     const dispatch = useDispatch();
 
@@ -39,12 +39,14 @@ const CartItem = ({ onContinueShopping }) => {
         } else {
             dispatch(removeItem(item.name));
             dispatch(updateTotalItems({ newQuantityChange: - 1 }));
+            onRemoveFromCart(item.name);
         }
     };
 
     const handleRemove = (item) => {
         dispatch(removeItem(item.name));
         dispatch(updateTotalItems({ newQuantityChange: - item.quantity }));
+        onRemoveFromCart(item.name);
     };
 
     // Calculate total cost based on quantity for an item
@@ -88,6 +90,7 @@ const CartItem = ({ onContinueShopping }) => {
 
 CartItem.propTypes = {
     onContinueShopping: PropTypes.func.isRequired,
+    onRemoveFromCart: PropTypes.func.isRequired
 };
 
 export default CartItem;

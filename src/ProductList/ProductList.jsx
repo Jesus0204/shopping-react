@@ -263,6 +263,14 @@ function ProductList() {
         }));
     };
 
+    const handleRemoveFromCart = (plant) => {
+        setAddedToCart((prevState) => {
+            const newState = { ...prevState };
+            delete newState[plant];
+            return newState;
+        });
+    };
+
     return (
         <div>
             <div className="navbar" style={styleObj}>
@@ -332,7 +340,11 @@ function ProductList() {
                                             </strong>
                                         </h3>
                                         <br></br>
-                                        <button className="product-button" onClick={() => handleAddToCart(plant)}>Add to Cart</button>
+                                        <button className={addedToCart[plant.name] ? "product-button added-to-cart" : "product-button"}
+                                        onClick={() => handleAddToCart(plant)}
+                                        disabled={addedToCart[plant.name]}>
+                                            {addedToCart[plant.name] ? 'Added' : 'Add to Cart'}
+                                        </button>
                                     </div>
                                 ))}
                             </div>
@@ -340,7 +352,7 @@ function ProductList() {
                     ))}
                 </div>
             ) : (
-                <CartItem onContinueShopping={handleContinueShopping} />
+                <CartItem onContinueShopping={handleContinueShopping} onRemoveFromCart={handleRemoveFromCart}  />
             )}
         </div>
     );
